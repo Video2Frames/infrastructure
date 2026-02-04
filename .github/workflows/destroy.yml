@@ -6,7 +6,6 @@ jobs:
   terraform-destroy:
     name: Terraform Destroy
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout repository
@@ -38,4 +37,8 @@ jobs:
         run: terraform init -backend-config=backend.hcl
       
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var db_password="${{ secrets.DB_PASSWORD }}"
+        run: | 
+          terraform destroy -auto-approve \
+            -var region="${{ vars.AWS_REGION }}" \
+            -var db_user="${{ secrets.DB_USER }}" \
+            -var db_password="${{ secrets.DB_PASSWORD }}"
