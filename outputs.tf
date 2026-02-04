@@ -32,3 +32,8 @@ output "order_created_topic_arn" {
   value       = aws_sns_topic.video_events.arn
   description = "O ARN do tópico SNS de eventos de vídeo"
 }
+
+output "video_processor_ecr_repository_uri" {
+  description = "URI of the Video Processor ECR public repository"
+  value       = aws_ecrpublic_repository.video_processor.repository_uri
+}
