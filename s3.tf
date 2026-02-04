@@ -1,6 +1,6 @@
 # S3 Bucket for video uploads
 resource "aws_s3_bucket" "video_uploads" {
-  bucket = "video2frame-video-uploads"
+  bucket = "video2frames-video-uploads"
 
   tags = merge(
     var.tags,
@@ -33,7 +33,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "video_uploads" {
 
 # S3 Bucket for extracted frames
 resource "aws_s3_bucket" "extracted_frames" {
-  bucket = "video2frame-extracted-frames"
+  bucket = "video2frames-extracted-frames"
 
   tags = merge(
     var.tags,

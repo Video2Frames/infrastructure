@@ -12,13 +12,13 @@ resource "aws_apigatewayv2_integration" "ingress_backend" {
   integration_method     = "ANY"
   payload_format_version = "1.0"
   request_parameters = {
-    "overwrite:path" = "/video2frame/$${request.path.proxy}"
+    "overwrite:path" = "/video2frames/$${request.path.proxy}"
   }
 }
 
 resource "aws_apigatewayv2_route" "backend_routes" {
   api_id    = aws_apigatewayv2_api.hackathon_api.id
-  route_key = "ANY /video2frame/{proxy+}"
+  route_key = "ANY /video2frames/{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.ingress_backend.id}"
 }
 
