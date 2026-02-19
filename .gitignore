@@ -53,4 +53,4 @@ __pycache__/
 lambda/layer.zip
 lambda/function.zip
 lambda/python
-lambda/init.sql
+lambda/*.sql
