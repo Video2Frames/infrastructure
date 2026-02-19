@@ -65,3 +65,23 @@ EOT
 
   timeout = 900
 }
+
+resource "helm_release" "metrics_server" {
+  depends_on       = [aws_eks_addon.vpc_cni, aws_eks_addon.kube_proxy, aws_eks_addon.coredns]
+  name             = "metrics-server"
+  repository       = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart            = "metrics-server"
+  version          = "3.12.2"
+  namespace        = "kube-system"
+  create_namespace = false
+
+  values = [
+    <<-EOT
+args:
+  - --kubelet-insecure-tls
+  - --kubelet-preferred-address-types=InternalIP
+EOT
+  ]
+
+  timeout = 300
+}
