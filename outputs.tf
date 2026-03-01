@@ -37,3 +37,8 @@ output "video_processor_ecr_repository_uri" {
   description = "URI of the Video Processor ECR public repository"
   value       = aws_ecrpublic_repository.video_processor.repository_uri
 }
+
+output "ecr_public_alias" {
+  description = "Public ECR registry alias (used to form public.ecr.aws/<alias>/...). Exposed so CI can use it as ECR_PUBLIC_ALIAS."
+  value       = split("/", aws_ecrpublic_repository.video_processor.repository_uri)[1]
+}
