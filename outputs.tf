@@ -42,3 +42,17 @@ output "ecr_public_alias" {
   description = "Public ECR registry alias (used to form public.ecr.aws/<alias>/...). Exposed so CI can use it as ECR_PUBLIC_ALIAS."
   value       = split("/", aws_ecrpublic_repository.video_processor.repository_uri)[1]
 }
+
+
+#############################################
+# EKS - Outputs necessários para IRSA
+#############################################
+output "oidc_provider_arn" {
+  description = "ARN do OIDC Provider do EKS (usado para IRSA)"
+  value       = module.eks.oidc_provider_arn
+}
+
+output "oidc_provider_url" {
+  description = "URL do OIDC Provider do EKS"
+  value       = module.eks.oidc_provider
+}
