@@ -43,18 +43,6 @@ def lambda_handler(event, context):
             file_path="create_identification_db.sql"
         )
 
-        logger.info("Creating and initializing application databases")
-        _execute_sql_file(
-            conn=psycopg2.connect(
-                host=db_host,
-                port=db_port,
-                database="video_status",
-                user=db_user,
-                password=db_password,
-            ),
-            file_path="init_status_db.sql"
-        )
-
         # Execute the new video workflow initialization SQL against video_status
         _execute_sql_file(
             conn=psycopg2.connect(
