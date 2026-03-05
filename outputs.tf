@@ -56,3 +56,18 @@ output "oidc_provider_url" {
   description = "URL do OIDC Provider do EKS"
   value       = module.eks.oidc_provider
 }
+
+output "vpc_id" {
+  description = "ID da VPC onde o EKS e RDS estão provisionados"
+  value       = module.vpc.vpc_id
+}
+
+output "private_subnets" {
+  description = "IDs das subnets privadas da VPC"
+  value       = module.vpc.private_subnets
+}
+
+output "rds_sg_id" {
+  description = "ID do security group associado ao RDS"
+  value       = aws_security_group.rds.id
+}
