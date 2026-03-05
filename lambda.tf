@@ -113,9 +113,9 @@ resource "null_resource" "package_lambda" {
       cd ${path.module}/lambda && \
       cp ../scripts/create_status_db.sql . && \
       cp ../scripts/create_identification_db.sql . && \
-      cp ../scripts/init_status_db.sql . && \
+      cp ../scripts/init_video_workflow_db.sql . && \
       cp ../scripts/init_identification_db.sql . && \
-      zip function.zip init_db.py create_status_db.sql create_identification_db.sql init_status_db.sql init_identification_db.sql
+      zip function.zip init_db.py create_status_db.sql create_identification_db.sql init_video_workflow_db.sql init_identification_db.sql
     EOF
   }
 }
