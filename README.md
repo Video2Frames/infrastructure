@@ -150,6 +150,148 @@ Publicado quando ocorre falha no processamento de um vídeo.
 - Status Service (via `status_updates_queue`)
 - Notificator Service (via `notifications_queue`)
 
-Para mais detalhes sobre os contratos de mensagens, consulte [messaging.md](messaging.md).
-
 ## Documentação de Endpoints
+
+### Identificação (`lambda-identification-auth`)
+
+---
+
+#### `POST /clients` — Cadastro de cliente
+
+Cria um novo usuário no sistema.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Content-Type` | `application/json` |
+
+**Body:**
+```json
+{
+    "email": "usuario@exemplo.com",
+    "password": "Senha123!"
+}
+```
+
+**Exemplo de resposta (`200 OK`):**
+```json
+{
+    "message": "cliente criado com sucesso"
+}
+```
+
+---
+
+#### `POST /login` — Geração de token
+
+Autentica o usuário e retorna tokens de acesso JWT.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Content-Type` | `application/json` |
+
+**Body:**
+```json
+{
+    "email": "usuario@exemplo.com",
+    "password": "Senha123!"
+}
+```
+
+**Exemplo de resposta (`200 OK`):**
+```json
+{
+    "access_token": "<access_token>",
+    "refresh_token": "<refresh_token>",
+    "id_token": "<id_token>"
+}
+```
+
+---
+
+#### `GET /me` — Validação de usuário
+
+Valida o token JWT e retorna os dados do usuário autenticado.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Authorization` | `Bearer <token>` |
+
+**Exemplo de resposta (`200 OK`):**
+```json
+{
+    "id": "<user-uuid>",
+    "email": "usuario@exemplo.com"
+}
+```
+
+---
+
+### Video Workflow (`video-workflow`)
+
+> Todos os endpoints abaixo requerem o header `Authorization: Bearer <token>`.
+
+---
+
+#### `POST /api/upload/videos` — Upload de vídeo
+
+Faz o upload de um vídeo para processamento.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Authorization` | `Bearer <token>` |
+| `Content-Type` | `multipart/form-data` |
+
+**Body (form-data):**
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `file` | `file` | Arquivo de vídeo a ser processado |
+
+**Exemplo de resposta:** `200 OK`
+
+---
+
+#### `GET /api/consultation/videos` — Consulta de vídeos
+
+Lista todos os vídeos e seus respectivos status de processamento para o usuário autenticado.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Authorization` | `Bearer <token>` |
+
+**Exemplo de resposta (`200 OK`):**
+```json
+[
+    {
+        "videoId": "<video-uuid>",
+        "userId": "<user-uuid>",
+        "uploadPath": "s3://video2frames-video-uploads/video-uploads/<user-uuid>/<video-uuid>.mp4",
+        "outputPath": "s3://video2frames-extracted-frames/<video-uuid>.zip",
+        "status": "PROCESSED",
+        "uploadedAt": "2026-01-01T00:00:00.000000Z",
+        "processedAt": "2026-01-01T00:00:02.000000Z"
+    }
+]
+```
+
+---
+
+#### `GET /api/consultation/download` — Download do ZIP de frames
+
+Retorna o arquivo ZIP com os frames extraídos do vídeo processado.
+
+**Headers:**
+| Header | Valor |
+|---|---|
+| `Authorization` | `Bearer <token>` |
+
+**Query Parameters:**
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|---|---|---|---|
+| `video_id` | `string (UUID)` | Sim | ID do vídeo a ser baixado |
+
+**Exemplo de resposta:** Download direto do arquivo `.zip`.
